@@ -19,23 +19,45 @@ class UsersRepository implements IUsersRepository {
   }
 
   create({ name, email }: ICreateUserDTO): User {
-    // Complete aqui
+    const user = new User();
+
+    //Object.assing (Função do java script que perimite receber um objeto e os atributos desse objeto,)
+    Object.assign(user, {
+      name,
+      email,
+      admin: false,
+      created_at: new Date(),
+      updated_at: new Date(),
+    });
+    this.users.push(user);
+
+    return user;
   }
 
   findById(id: string): User | undefined {
-    // Complete aqui
+    const userExist = this.users.find((user) => user.id == id);
+    return userExist;
   }
 
   findByEmail(email: string): User | undefined {
-    // Complete aqui
+    const emailExist = this.users.find((user) => user.email == email);
+    return emailExist;
   }
 
   turnAdmin(receivedUser: User): User {
-    // Complete aqui
+    let updateUser = this.users.find((user) => user.id === receivedUser.id);
+    updateUser.admin = true;
+
+    const updatedusers = this.users.map((user) =>
+      user.id === updateUser.id ? updateUser : user
+    );
+    this.users = updatedusers;
+
+    return updateUser;
   }
 
   list(): User[] {
-    // Complete aqui
+    return this.users;
   }
 }
 
